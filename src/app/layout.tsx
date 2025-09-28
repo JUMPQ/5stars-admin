@@ -1,14 +1,17 @@
 // src/app/layout.tsx
-import RootClientShell from '@/components/RootClientShell';
+import RootClientShell from "@/components/RootClientShell";
 import "./globals.css";
 
-
 export const metadata = {
-  title: 'Football League',
-  description: 'Management UI for the football league',
+  title: "Football League",
+  description: "Management UI for the football league",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <head>

@@ -18,7 +18,7 @@ export const NAV_ITEMS: Record<
   ],
   team: [
     { id: "dashboard", label: "Dashboard", href: "/team" },
-    { id: "teams", label: "Teams", href: "/team/teams" },
+    // { id: "teams", label: "Teams", href: "/team/teams" },
     {
       id: "team-management",
       label: "Team Management",

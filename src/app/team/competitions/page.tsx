@@ -19,7 +19,10 @@ function CompetitionCard({ title }: { title: string }) {
       aria-label={title}
     >
       {/* If you want a background image later, replace the bg with an <img> absolutely positioned */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+      />
       {/* The pill label centered near the bottom */}
       <div className="w-full flex justify-center pb-6">
         <span className="inline-block bg-white/90 border border-black/20 rounded-full px-4 py-1 text-sm font-medium shadow-sm">
