@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import RootClientShell from "@/components/RootClientShell";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata = {
   title: "Football League",
@@ -14,12 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/5starslogo.svg" type="image/svg+xml" />
-      </head>
       <body>
         {/* RootClientShell is a client component that provides Header, Sidebar and AuthProvider */}
-        <RootClientShell>{children}</RootClientShell>
+        <AuthProvider>
+          <RootClientShell>{children}</RootClientShell>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,35 +1,65 @@
 // src/config/config.ts
-export type Role = "admin" | "team";
+import { IconType } from "react-icons";
+import {
+  FiGrid,
+  FiPlusSquare,
+  FiAward,
+  FiUser,
+  FiUsers,
+  FiSettings,
+} from "react-icons/fi";
+import { FaFutbol, FaUsers } from "react-icons/fa";
 
-export const NAV_ITEMS: Record<
-  Role,
-  { id: string; label: string; href: string }[]
-> = {
-  admin: [
-    { id: "dashboard", label: "Dashboard", href: "/admin" },
-    {
-      id: "add-competition",
-      label: "Add Competition",
-      href: "/admin/competitions/add",
-    },
-    { id: "competitions", label: "Competitions", href: "/admin/competitions" },
-    { id: "team-profile", label: "Team Profile", href: "/admin/team-profile" },
-    { id: "teams", label: "Teams", href: "/admin/teams" },
-  ],
-  team: [
-    { id: "dashboard", label: "Dashboard", href: "/team" },
-    // { id: "teams", label: "Teams", href: "/team/teams" },
-    {
-      id: "team-management",
-      label: "Team Management",
-      href: "/team/management",
-    },
-    { id: "competitions", label: "Competitions", href: "/team/competitions" },
-    { id: "team-profile", label: "Team Profile", href: "/team/profile" },
-  ],
+export type Role = "admin";
+export type NavItem = {
+  id: string;
+  label: string;
+  href: string;
+  icon?: IconType;
+  requiresAuth?: boolean;
 };
+
+export const NAV_ITEMS: NavItem[] = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    href: "/admin/dashboard",
+    icon: FiGrid,
+    requiresAuth: true,
+  },
+  {
+    id: "add-competition",
+    label: "Add Competition",
+    href: "/admin/addcompetition",
+    icon: FaFutbol,
+    requiresAuth: true,
+  },
+  {
+    id: "competitions",
+    label: "Competitions",
+    href: "/admin/competitions",
+    icon: FaFutbol,
+    requiresAuth: true,
+  },
+  {
+    id: "teams",
+    label: "Teams",
+    href: "/admin/teams",
+    icon: FaUsers,
+    requiresAuth: true,
+  },
+];
+
+export const PUBLIC_NAV_ITEMS: NavItem[] = [
+  { id: "login", label: "Login", href: "/login" },
+];
 
 export const DASHBOARD_TEXT = {
   admin: { title: "League Dashboard", subtitle: "Manage the whole league" },
-  team: { title: "Team Dashboard", subtitle: "View your team and fixtures" },
+};
+
+export const AUTH_ROUTES = {
+  login: "/login",
+  admin: "/admin/dashboard",
+  unauthorized: "/unauthorized",
 };

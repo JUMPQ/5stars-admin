@@ -1,22 +1,20 @@
 "use client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-const Page = () => {
-  const { user } = useAuth();
+export default function HomePage() {
   const router = useRouter();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!user) return;
-    if (user.role === "admin") {
-      router.replace("/admin");
+    if (loading) return; // wait until auth check is done
+    if (user) {
+      router.replace("/admin/dashboard");
     } else {
-      router.replace("/team");
+      router.replace("/login");
     }
-  }, [user, router]);
+  }, [user, loading, router]);
 
-  return null;
-};
-
-export default Page;
+  return null; // or a loader/spinner if you want
+}
