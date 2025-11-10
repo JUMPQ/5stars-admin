@@ -5,6 +5,12 @@ import { CurrencyInput } from "@/components/CurrencyInput";
 import { ChevronDown, Upload, CircleQuestionMark, Plus, X } from "lucide-react";
 import api from "@/utils/api";
 
+// Define the Prize type
+interface Prize {
+  place: string;
+  amount: string;
+}
+
 export default function BannerForm() {
   const [banner, setBanner] = useState<File | null>(null);
   const [importFile, setImportFile] = useState<File | null>(null);
@@ -13,12 +19,12 @@ export default function BannerForm() {
   const [ageGroup, setAgeGroup] = useState("");
   const [division, setDivision] = useState("");
   const [registrationFee, setRegistrationFee] = useState("");
-  const [prizes, setPrizes] = useState([{ place: "1st Place", amount: "" }]);
+  const [prizes, setPrizes] = useState<Prize[]>([]); // Initialize with Prize type
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const getOrdinal = (n: number) => {
+  const getOrdinal = (n: number): string => {
     const j = n % 10,
       k = n % 100;
     if (k >= 11 && k <= 13) return `${n}th Place`;
@@ -36,12 +42,11 @@ export default function BannerForm() {
 
   const removePrize = (index: number) =>
     setPrizes((prev) => {
-      if (prev.length <= 1) return prev;
       const next = prev.filter((_, i) => i !== index);
       return next.map((p, i) => ({ ...p, place: getOrdinal(i + 1) }));
     });
 
-  const updatePrize = (index: number, field: string, value: string) =>
+  const updatePrize = (index: number, field: keyof Prize, value: string) =>
     setPrizes((prev) =>
       prev.map((p, i) => (i === index ? { ...p, [field]: value } : p))
     );
@@ -82,13 +87,18 @@ export default function BannerForm() {
         return;
       }
 
+      if (!competitionName) {
+        setError("Competition name is required");
+        return;
+      }
+
       const bannerBase64 = banner ? await fileToBase64(banner) : "";
       const cleanedFee = registrationFee
         ? parseFloat(registrationFee.replace(/[₦,\s]/g, ""))
         : 0;
 
-      if (isNaN(cleanedFee) || cleanedFee <= 0) {
-        setError("Registration fee must be a positive number");
+      if (isNaN(cleanedFee) || cleanedFee < 0) {
+        setError("Registration fee must be a non-negative number");
         return;
       }
 
@@ -101,7 +111,7 @@ export default function BannerForm() {
         prizes: prizes.map((p) => ({
           place: p.place,
           amount: p.amount || "",
-        })),
+        })), // Send prizes as-is, even if empty
         banner: bannerBase64,
         status: "pending",
         startDate: startDate || null,
@@ -115,7 +125,7 @@ export default function BannerForm() {
       setAgeGroup("");
       setDivision("");
       setRegistrationFee("");
-      setPrizes([{ place: "1st Place", amount: "" }]);
+      setPrizes([]); // Reset to empty array
       setBanner(null);
       setImportFile(null);
       setStartDate("");
@@ -142,7 +152,7 @@ export default function BannerForm() {
       {/* Full-width button */}
       <button
         type="submit"
-        className="w-[120%] cursor-pointer -ml-[10%] bg-red-500 text-white py-2 px-4 hover:bg-red-600 transition"
+        className="w-full bg-red-500 text-white py-2 px-4 hover:bg-red-600 transition"
       >
         Add Competition
       </button>
@@ -193,6 +203,7 @@ export default function BannerForm() {
           className="input bg-white text-gray-800 border-gray-400"
           value={competitionName}
           onChange={(e) => setCompetitionName(e.target.value)}
+          required
         />
 
         <input
@@ -236,7 +247,7 @@ export default function BannerForm() {
         <CurrencyInput
           placeholder="Registration Fee"
           value={registrationFee}
-          onValueChange={(val) => setRegistrationFee(val)}
+          onValueChange={(val) => setRegistrationFee(val || "")}
           className="bg-white text-gray-800 border-gray-400"
         />
 
@@ -258,50 +269,60 @@ export default function BannerForm() {
           onChange={(e) => setEndDate(e.target.value)}
         />
 
-        {/* Dynamic Prize Pool Section */}
+        {/* Optional Prize Pool Section */}
         <div className="space-y-3 border border-yellow-400 rounded-md p-3 bg-white">
-          <h3 className="text-gray-900 font-semibold">Prize Pool</h3>
+          <div className="flex justify-between items-center">
+            <h3 className="text-gray-900 font-semibold">Prize Pool (Optional)</h3>
+            {prizes.length === 0 && (
+              <button
+                type="button"
+                onClick={addPrize}
+                className="flex items-center gap-2 text-gray-800 hover:text-yellow-400 transition"
+              >
+                <Plus className="w-4 h-4" /> Add Prize
+              </button>
+            )}
+          </div>
 
-          {prizes.map((prize, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <input
-                type="text"
-                className="input bg-white text-gray-800 border-gray-400 w-40"
-                value={prize.place}
-                onChange={(e) => updatePrize(index, "place", e.target.value)}
-              />
+          {prizes.length > 0 && (
+            <>
+              {prizes.map((prize, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    className="input bg-white text-gray-800 border-gray-400 w-40"
+                    value={prize.place}
+                    onChange={(e) => updatePrize(index, "place", e.target.value)}
+                  />
 
-              <div className="flex-1">
-                <CurrencyInput
-                  placeholder="₦0.00"
-                  value={prize.amount}
-                  onValueChange={handlePrizeCurrencyChange(index)}
-                  className="bg-white text-gray-800 border-gray-400"
-                />
-              </div>
+                  <div className="flex-1">
+                    <CurrencyInput
+                      placeholder="₦0.00"
+                      value={prize.amount}
+                      onValueChange={handlePrizeCurrencyChange(index)}
+                      className="bg-white text-gray-800 border-gray-400"
+                    />
+                  </div>
 
-              {prizes.length > 1 ? (
-                <button
-                  type="button"
-                  onClick={() => removePrize(index)}
-                  className="text-red-500 hover:text-red-700"
-                  aria-label={`Remove prize ${index + 1}`}
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              ) : (
-                <div className="w-5" />
-              )}
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={addPrize}
-            className="flex items-center gap-2 text-gray-800 hover:text-yellow-400 transition"
-          >
-            <Plus className="w-4 h-4" /> Add Prize
-          </button>
+                  <button
+                    type="button"
+                    onClick={() => removePrize(index)}
+                    className="text-red-500 hover:text-red-700"
+                    aria-label={`Remove prize ${index + 1}`}
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addPrize}
+                className="flex items-center gap-2 text-gray-800 hover:text-yellow-400 transition"
+              >
+                <Plus className="w-4 h-4" /> Add Prize
+              </button>
+            </>
+          )}
         </div>
       </div>
     </form>

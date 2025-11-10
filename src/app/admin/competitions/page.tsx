@@ -51,7 +51,7 @@ export default function CompetitionsPage() {
           {competitions.map((comp) => (
             <Link
               key={comp._id}
-              href={`competitions/${comp._id}`}
+              href={`${comp._id}`}
               className="border border-gray-400 rounded-lg overflow-hidden hover:border-yellow-400 transition cursor-pointer"
             >
               {/* Banner */}

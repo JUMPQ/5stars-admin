@@ -102,80 +102,140 @@ export default function TeamsPage() {
   };
 
   const settings = {
-    dots: false,
-    infinite: false,
+    dots: true,
+    infinite: teams.length > 3,
     speed: 500,
-    slidesToShow: Math.min(teams.length || 1, 5),
+    slidesToShow: 3,
     slidesToScroll: 1,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          arrows: true,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: true,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: true,
+        },
+      },
+    ],
   };
 
   if (loading) {
-    return <p className="text-gray-600 text-center mt-10">Loading teams...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-50">
+        <p className="text-lg text-gray-600 animate-pulse">Loading teams...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="p-16 bg-gray-100">
-      <h2 className="text-2xl text-center font-semibold mb-16 text-gray-900">
-        Teams
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-900">
+        Our Teams
       </h2>
 
       {/* Error message */}
-      {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+      {error && (
+        <p className="text-red-500 text-center mb-6 bg-red-50 p-3 rounded-lg max-w-lg mx-auto text-sm sm:text-base">
+          {error}
+        </p>
+      )}
 
-      {/* All Teams Carousel */}
+      {/* All Teams */}
       {teams.length === 0 ? (
-        <p className="text-gray-600 text-center">No teams yet.</p>
+        <p className="text-gray-600 text-center text-base sm:text-lg">
+          No teams available yet.
+        </p>
       ) : (
-        <Slider {...settings}>
-          {teams.map((team) => (
-            <div key={team._id} className="!flex !justify-center">
+        <div className="max-w-6xl mx-auto">
+          {/* Mobile View: Single Column Flex */}
+          <div className="block sm:hidden space-y-3">
+            {teams.map((team) => (
               <div
-                className="flex flex-col items-center cursor-pointer"
-                onClick={() => router.push(`teams/${team._id}`)}
+                key={team._id}
+                className="flex items-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => router.push(`${team._id}`)}
               >
                 <img
                   src={team.logoUrl || "/default-logo.png"}
                   alt={team.name}
-                  className="h-28 w-28 object-contain mb-2"
+                  className="h-16 w-16 object-contain rounded-full border-2 border-gray-200 mr-4"
                 />
-                <p className="w-28 text-sm text-center text-gray-800">
+                <p className="text-sm font-medium text-gray-800 flex-1">
                   {team.name}
                 </p>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </div>
+
+          {/* Desktop View: Carousel */}
+          <div className="hidden sm:block">
+            <Slider {...settings}>
+              {teams.map((team) => (
+                <div key={team._id} className="px-2">
+                  <div
+                    className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer mx-auto max-w-xs"
+                    onClick={() => router.push(`teams/${team._id}`)}
+                  >
+                    <img
+                      src={team.logoUrl || "/default-logo.png"}
+                      alt={team.name}
+                      className="h-24 w-24 object-contain mb-3 rounded-full border-2 border-gray-200"
+                    />
+                    <p className="text-sm sm:text-base font-medium text-center text-gray-800 truncate w-full">
+                      {team.name}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        </div>
       )}
 
       {/* Unverified Teams (Admin Only) */}
       {unverifiedTeams.length > 0 && (
-        <div className="mt-14">
-          <div className="flex gap-4 items-center justify-center">
-            <h3 className="text-md font-medium mb-2 text-gray-700">
+        <div className="mt-12 max-w-3xl mx-auto">
+          <div className="flex items-center justify-center mb-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-700">
               Unverified Teams
             </h3>
-            <div className="flex-1 pb-1.5 border-t border-gray-400"></div>
           </div>
-          <div className="space-y-2 mt-10">
+          <div className="space-y-3">
             {unverifiedTeams.map((team) => (
               <div
                 key={team._id}
-                className="grid grid-cols-[350px_auto] items-center mt-2 pb-2 gap-4"
+                className="flex flex-col items-start bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
-                <span className="text-gray-800">
+                <span className="text-gray-800 text-sm sm:text-base mb-3 flex-1">
                   {team.name} (Coach: {team.headCoach?.name || "Unknown"})
                 </span>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full justify-end">
                   <button
                     onClick={() => handleVerifyTeam(team._id, true)}
-                    className="px-2 py-1 border border-red-500 text-gray-800 bg-white rounded-md hover:bg-yellow-400 hover:text-gray-900"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm"
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => handleVerifyTeam(team._id, false)}
-                    className="px-2 py-1 border border-gray-400 text-gray-800 bg-white rounded-md hover:bg-red-500 hover:text-white"
+                    className="w-full sm:w-auto px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-sm"
                   >
                     Decline
                   </button>
@@ -188,30 +248,29 @@ export default function TeamsPage() {
 
       {/* Edit Access Requests (Pending Change Requests, Admin Only) */}
       {changeRequests.length > 0 && (
-        <div className="mt-14">
-          <div className="flex gap-4 items-center justify-center">
-            <h3 className="text-md font-medium mb-2 text-gray-700">
+        <div className="mt-12 max-w-3xl mx-auto">
+          <div className="flex items-center justify-center mb-6">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-700">
               Edit Access Requests
             </h3>
-            <div className="flex-1 pb-1.5 border-t border-gray-400"></div>
           </div>
-          <div className="space-y-2 mt-10">
+          <div className="space-y-3">
             {changeRequests.map((request) => (
               <div
                 key={request._id}
-                className="grid grid-cols-[350px_auto] items-center mt-2 pb-2 gap-4"
+                className="flex flex-col items-start bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
-                <span className="text-gray-800">
+                <span className="text-gray-800 text-sm sm:text-base mb-3 flex-1">
                   {request.team.name} requested to change {request.type} to{" "}
                   {request.newValue} (by{" "}
                   {request.requestedBy?.name || "Unknown"})
                 </span>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full justify-end">
                   <button
                     onClick={() =>
                       handleReviewChangeRequest(request._id, "approved")
                     }
-                    className="px-2 py-1 border border-red-500 text-gray-800 bg-white rounded-md hover:bg-yellow-400 hover:text-gray-900"
+                    className="w-full sm:w-auto px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-sm"
                   >
                     Allow
                   </button>
@@ -219,7 +278,7 @@ export default function TeamsPage() {
                     onClick={() =>
                       handleReviewChangeRequest(request._id, "rejected")
                     }
-                    className="px-2 py-1 border border-gray-400 text-gray-800 bg-white rounded-md hover:bg-red-500 hover:text-white"
+                    className="w-full sm:w-auto px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-sm"
                   >
                     Decline
                   </button>
