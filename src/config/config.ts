@@ -48,6 +48,13 @@ export const NAV_ITEMS: NavItem[] = [
     icon: FaUsers,
     requiresAuth: true,
   },
+  {
+    id: "fixtures",
+    label: "Fixtures",
+    href: "/admin/fixtures",
+    icon: FaFutbol,
+    requiresAuth: true,
+  },
 ];
 
 export const PUBLIC_NAV_ITEMS: NavItem[] = [

@@ -5,12 +5,13 @@
   "scripts": {
     "dev": "next dev --turbopack -p 3001",
     "build": "next build --turbopack",
-    "start": "next start -p 3001",
+    "start": "next start -p 3003",
     "lint": "eslint"
   },
   "dependencies": {
     "AsyncStorage": "^0.1.5",
     "axios": "^1.12.2",
+    "date-fns": "^4.1.0",
     "lucide-react": "^0.544.0",
     "next": "15.5.3",
     "react": "19.1.0",
