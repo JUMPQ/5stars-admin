@@ -174,7 +174,7 @@ export default function CompetitionEditPage() {
         <img
           src={banner}
           alt="banner"
-          className="w-full h-40 object-fill rounded-md"
+          className="w-full h-full object-fill rounded-md"
         />
       )}
 

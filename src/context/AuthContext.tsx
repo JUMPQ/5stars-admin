@@ -80,8 +80,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || "Login failed";
-      setError(errorMessage);
+      // setError(errorMessage);
+      console.log("LOGIN ERROR:", err.response?.data);
       throw new Error(errorMessage);
+
     } finally {
       setLoading(false);
     }
