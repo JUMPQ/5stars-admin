@@ -188,8 +188,6 @@ export default function BannerForm() {
           </span>
           <Upload className="inline ml-2 rounded-sm p-0.5 bg-gray-400 text-gray-800 w-5 h-5" />
         </label>
-        
-
         <CircleQuestionMark
           onClickCapture={() => alert("Accepted formats: .xlsx, .csv, .pdf")}
           className="text-gray-800 w-5 h-5 mt-2"
