@@ -9,6 +9,7 @@ import {
   FiSettings,
 } from "react-icons/fi";
 import { FaFutbol, FaUsers } from "react-icons/fa";
+import { ClipboardList } from "lucide-react";
 
 export type Role = "admin";
 export type NavItem = {
@@ -55,6 +56,14 @@ export const NAV_ITEMS: NavItem[] = [
     icon: FaFutbol,
     requiresAuth: true,
   },
+  {
+  id: "registrations",
+  label: "Registrations",
+  href: "/admin/registrations",
+  icon: ClipboardList,
+      requiresAuth: true,
+
+},
 ];
 
 export const PUBLIC_NAV_ITEMS: NavItem[] = [

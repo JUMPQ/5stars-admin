@@ -1,12 +1,14 @@
+
 "use client";
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import { useRouter } from "next/navigation";
 import api from "@/utils/api";
 
 export default function TeamsPage() {
+  // const [registrations, setRegistrations] = useState<any[]>([]);
   const [teams, setTeams] = useState<any[]>([]);
   const [unverifiedTeams, setUnverifiedTeams] = useState<any[]>([]);
   const [changeRequests, setChangeRequests] = useState<any[]>([]);

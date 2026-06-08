@@ -6,6 +6,7 @@ import api from "@/utils/api";
 
 export default function CompetitionsPage() {
   const [competitions, setCompetitions] = useState<any[]>([]);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
