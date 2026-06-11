@@ -6,6 +6,7 @@ import api from "@/utils/api";
 
 export default function CompetitionsPage() {
   const [competitions, setCompetitions] = useState<any[]>([]);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -55,12 +56,12 @@ export default function CompetitionsPage() {
               className="border border-gray-400 rounded-lg overflow-hidden hover:border-yellow-400 transition cursor-pointer"
             >
               {/* Banner */}
-              <div className="h-40 relative bg-gray-600 flex items-center justify-center overflow-hidden">
+              <div className="h-full relative bg-gray-600 flex items-center justify-center overflow-hidden">
                 {comp.banner ? (
                   <img
                     src={comp.banner}
                     alt={comp.name}
-                    className="w-full h-full object-fill"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <span className="text-gray-200">No Banner</span>
