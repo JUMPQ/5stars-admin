@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://backend.5starsteams.com/api",
+  baseURL: "http://localhost:5000/api",
 });
 
 api.interceptors.request.use((config) => {
@@ -21,17 +21,16 @@ api.interceptors.response.use(
   (error) => {
     console.error("API error:", error.response?.data, error.response?.status);
 
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && typeof window !== "undefined") {
+      +localStorage.removeItem("token");
       // Clear invalid token
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("token");
-        // Optional: Redirect to login page
-        // window.location.href = "/login";
-      }
+
+      // Optional: Redirect to login page
+      // window.location.href = "/login";
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

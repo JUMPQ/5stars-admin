@@ -6,7 +6,7 @@ import { CurrencyInput } from "@/components/CurrencyInput";
 import { ChevronDown, Upload, X, Plus } from "lucide-react";
 import api from "@/utils/api";
 
-export default function CompetitionEditPage() {
+export default function CompetitionEditPage() { 
   const router = useRouter();
   const params = useParams();
   const { id } = params;
@@ -174,7 +174,7 @@ export default function CompetitionEditPage() {
         <img
           src={banner}
           alt="banner"
-          className="w-full h-40 object-fill rounded-md"
+          className="w-full h-full object-fill rounded-md"
         />
       )}
 
