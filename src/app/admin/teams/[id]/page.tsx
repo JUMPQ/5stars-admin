@@ -204,7 +204,7 @@ export default function TeamProfilePage() {
                           <div className="flex gap-2 flex-wrap">
                             {p.passportPhoto && (
                               <a
-                                href={`http://localhost:5000${p.passportPhoto}`}
+                                href={`https://backend.5starsteams.com${p.passportPhoto}`}
                                 target="_blank"
                                 className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded"
                               >
@@ -213,7 +213,7 @@ export default function TeamProfilePage() {
                             )}
                             {p.parentalConsent && (
                               <a
-                                href={`http://localhost:5000${p.parentalConsent}`}
+                                href={`https://backend.5starsteams.com${p.parentalConsent}`}
                                 target="_blank"
                                 className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded"
                               >
@@ -222,7 +222,7 @@ export default function TeamProfilePage() {
                             )}
                             {p.medicalDoc && (
                               <a
-                                href={`http://localhost:5000${p.medicalDoc}`}
+                                href={`https://backend.5starsteams.com${p.medicalDoc}`}
                                 target="_blank"
                                 className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded"
                               >
