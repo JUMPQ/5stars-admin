@@ -50,7 +50,7 @@ export function LoginForm() {
 
       try {
         const response = await fetch(
-          "https://backend.5starsteams.com/api/auth/forgot-password",
+          "http://localhost:5000/api/auth/forgot-password",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -78,7 +78,7 @@ export function LoginForm() {
 
       try {
         const response = await fetch(
-          "https://backend.5starsteams.com/api/auth/verify-pin",
+          "http://localhost:5000/api/auth/verify-pin",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -111,7 +111,7 @@ export function LoginForm() {
 
       try {
         const response = await fetch(
-          "https://backend.5starsteams.com/api/auth/reset-password",
+          "http://localhost:5000/api/auth/reset-password",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
